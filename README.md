@@ -101,7 +101,7 @@ Bu repo, Astro'nun resmi GitHub Pages akışını kullanır:
 
 - `withastro/action@v6`
 - `actions/deploy-pages@v5`
-- Node 20
+- Node 22.12.0+
 
 ### GitHub tarafında yapılacaklar
 
