@@ -1,0 +1,53 @@
+---
+import { getCollection } from "astro:content";
+import ArticleCard from "../../components/ArticleCard.astro";
+import Sidebar from "../../components/Sidebar.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import pageSettings from "../../data/page-settings.json";
+import { groupByCount, slugify, sortArticles } from "../../utils/helpers";
+
+export async function getStaticPaths() {
+  const articles = await getCollection("articles");
+  const tags = [...new Set(articles.flatMap((article) => article.data.tags))];
+
+  return tags.map((tag) => ({
+    params: { etiket: slugify(tag) },
+    props: { tag }
+  }));
+}
+
+const { tag } = Astro.props;
+const allArticles = sortArticles(await getCollection("articles"));
+const filteredArticles = allArticles.filter((article) => article.data.tags.includes(tag));
+const categories = groupByCount(allArticles.map((article) => article.data.category));
+const tags = groupByCount(allArticles.flatMap((article) => article.data.tags)).slice(0, 14);
+const recentArticles = allArticles.slice(0, 5);
+---
+
+<BaseLayout
+  title={`#${tag}`}
+  description={`${tag} etiketi ile eşleşen makaleler.`}
+  canonicalPath={`/etiket/${slugify(tag)}/`}
+  structuredData={{
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: `${tag} etiketi`,
+    description: `${tag} etiketi ile eşleşen makaleler`
+  }}
+>
+  <section class="container-shell py-12 lg:py-16">
+    <div class="max-w-3xl">
+      <p class="section-eyebrow">{pageSettings.taxonomy.tagEyebrow}</p>
+      <h1 class="mt-5 font-display text-4xl font-semibold text-slate-950 dark:text-white sm:text-5xl">#{tag}</h1>
+      <p class="mt-5 text-lg leading-8 text-slate-600 dark:text-slate-300">{pageSettings.taxonomy.tagDescription}</p>
+    </div>
+
+    <div class="mt-10 grid gap-10 xl:grid-cols-[minmax(0,1fr)_320px]">
+      <div class="grid gap-6 md:grid-cols-2">
+        {filteredArticles.map((article) => <ArticleCard article={article} />)}
+      </div>
+
+      <Sidebar categories={categories} tags={tags} recentArticles={recentArticles} />
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,36 @@
+---
+interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+interface Props {
+  headings: Heading[];
+}
+
+const { headings } = Astro.props;
+const tocItems = headings.filter((heading) => heading.depth === 2 || heading.depth === 3);
+---
+
+{
+  tocItems.length > 0 && (
+    <nav class="surface-card p-5" aria-label="İçindekiler" data-pagefind-ignore>
+      <h3 class="font-display text-lg font-semibold text-slate-900 dark:text-white">İçindekiler</h3>
+      <ol class="mt-4 space-y-3 text-sm">
+        {
+          tocItems.map((heading) => (
+            <li class={heading.depth === 3 ? "pl-4" : ""}>
+              <a
+                href={`#${heading.slug}`}
+                class="block rounded-xl px-3 py-2 text-slate-600 hover:bg-slate-100 hover:text-brand-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-accent-300"
+              >
+                {heading.text}
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+    </nav>
+  )
+}

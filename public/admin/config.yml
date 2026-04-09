@@ -1,0 +1,223 @@
+backend:
+  name: github
+  repo: cherynoska/info-site
+  branch: main
+  base_url: https://decap-oauth.netlify.app
+
+local_backend: true
+
+media_folder: "public/images/uploads"
+public_folder: "/images/uploads"
+
+locale: "tr"
+site_url: https://cherynoska.github.io/info-site/
+display_url: https://cherynoska.github.io/info-site/
+
+collections:
+  - name: "articles"
+    label: "Makaleler"
+    folder: "src/content/articles"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Başlık", name: "title", widget: "string" }
+      - { label: "Açıklama", name: "description", widget: "text" }
+      - { label: "Yayın Tarihi", name: "pubDate", widget: "datetime" }
+      - { label: "Kapak Görseli", name: "heroImage", widget: "image", required: false }
+      - { label: "Kategori", name: "category", widget: "select", options: ["Genel", "Teknoloji", "Bilim", "Kültür", "Sağlık", "Eğitim"] }
+      - { label: "Etiketler", name: "tags", widget: "list", default: [] }
+      - { label: "Yazar", name: "author", widget: "string", default: "Admin" }
+      - { label: "Öne Çıkan", name: "featured", widget: "boolean", default: false }
+      - { label: "İçerik", name: "body", widget: "markdown" }
+
+  - name: "pages"
+    label: "Sayfalar"
+    folder: "src/content/pages"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Başlık", name: "title", widget: "string" }
+      - { label: "Açıklama", name: "description", widget: "text" }
+      - { label: "İçerik", name: "body", widget: "markdown" }
+
+  - name: "team"
+    label: "Ekip"
+    folder: "src/content/team"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "İsim", name: "name", widget: "string" }
+      - { label: "Ünvan", name: "title", widget: "string" }
+      - { label: "Fotoğraf", name: "photo", widget: "image" }
+      - { label: "Sıra", name: "order", widget: "number", default: 0 }
+      - label: "Sosyal Linkler"
+        name: "social"
+        widget: "object"
+        fields:
+          - { label: "Twitter", name: "twitter", widget: "string", required: false }
+          - { label: "LinkedIn", name: "linkedin", widget: "string", required: false }
+          - { label: "GitHub", name: "github", widget: "string", required: false }
+      - { label: "Bio", name: "body", widget: "markdown" }
+
+  - name: "gallery"
+    label: "Galeri"
+    folder: "src/content/gallery"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Başlık", name: "title", widget: "string" }
+      - { label: "Görsel", name: "image", widget: "image" }
+      - { label: "Alternatif Metin", name: "alt", widget: "string" }
+      - { label: "Açıklama", name: "description", widget: "text", required: false }
+      - { label: "Sıra", name: "order", widget: "number", default: 0 }
+
+  - name: "site_config"
+    label: "Site Ayarları"
+    files:
+      - label: "Genel Ayarlar"
+        name: "general"
+        file: "src/data/settings.json"
+        fields:
+          - { label: "Site Başlığı", name: "siteTitle", widget: "string" }
+          - { label: "Site Açıklaması", name: "siteDescription", widget: "text" }
+          - { label: "Logo", name: "logo", widget: "image", required: false }
+          - { label: "Varsayılan Sosyal Görsel", name: "defaultSocialImage", widget: "image", required: false }
+          - { label: "İletişim Email", name: "contactEmail", widget: "string" }
+          - { label: "Telefon", name: "phone", widget: "string", required: false }
+          - { label: "Adres", name: "address", widget: "text", required: false }
+          - { label: "Formspree Action URL", name: "formAction", widget: "string", required: false }
+          - { label: "Footer Rozeti", name: "footerEyebrow", widget: "string", required: false }
+          - { label: "Footer Alt Metni", name: "footerLegalText", widget: "text", required: false }
+          - label: "Navigasyon Menüsü"
+            name: "navigation"
+            widget: "list"
+            fields:
+              - { label: "Etiket", name: "label", widget: "string" }
+              - { label: "Bağlantı", name: "href", widget: "string" }
+          - label: "Footer Linkleri"
+            name: "footerLinks"
+            widget: "list"
+            fields:
+              - { label: "Etiket", name: "label", widget: "string" }
+              - { label: "Bağlantı", name: "href", widget: "string" }
+          - label: "Sosyal Linkler"
+            name: "socialLinks"
+            widget: "list"
+            fields:
+              - { label: "Etiket", name: "label", widget: "string" }
+              - { label: "Bağlantı", name: "href", widget: "string" }
+
+      - label: "Ana Sayfa"
+        name: "homepage"
+        file: "src/data/homepage.json"
+        fields:
+          - { label: "Üst Rozet", name: "eyebrow", widget: "string" }
+          - { label: "Başlık", name: "title", widget: "string" }
+          - { label: "Açıklama", name: "description", widget: "text" }
+          - { label: "Birincil Buton Yazısı", name: "primaryLabel", widget: "string" }
+          - { label: "Birincil Buton Linki", name: "primaryHref", widget: "string" }
+          - { label: "İkincil Buton Yazısı", name: "secondaryLabel", widget: "string", required: false }
+          - { label: "İkincil Buton Linki", name: "secondaryHref", widget: "string", required: false }
+          - { label: "Hero Görseli", name: "heroImage", widget: "image" }
+          - { label: "Hero Görsel Alt Metni", name: "heroImageAlt", widget: "string" }
+          - { label: "Öne Çıkanlar Rozeti", name: "featuredEyebrow", widget: "string" }
+          - { label: "Öne Çıkanlar Başlığı", name: "featuredTitle", widget: "string" }
+          - { label: "Öne Çıkanlar Buton Yazısı", name: "featuredButtonLabel", widget: "string" }
+          - { label: "Bilgi Kartları Rozeti", name: "infoEyebrow", widget: "string" }
+          - { label: "Bilgi Kartları Başlığı", name: "infoTitle", widget: "string" }
+          - label: "Bilgi Kartları"
+            name: "infoCards"
+            widget: "list"
+            fields:
+              - { label: "İkon", name: "icon", widget: "select", options: ["document", "shield", "home", "clock"] }
+              - { label: "Başlık", name: "title", widget: "string" }
+              - { label: "Açıklama", name: "description", widget: "text" }
+          - { label: "Son Yayınlar Rozeti", name: "latestEyebrow", widget: "string" }
+          - { label: "Son Yayınlar Başlığı", name: "latestTitle", widget: "string" }
+          - { label: "Son Yayınlar Buton Yazısı", name: "latestButtonLabel", widget: "string" }
+          - { label: "CTA Rozeti", name: "ctaEyebrow", widget: "string" }
+          - { label: "CTA Başlığı", name: "ctaTitle", widget: "string" }
+          - { label: "CTA Açıklaması", name: "ctaDescription", widget: "text" }
+          - { label: "CTA Birincil Buton Yazısı", name: "ctaPrimaryLabel", widget: "string" }
+          - { label: "CTA Birincil Buton Linki", name: "ctaPrimaryHref", widget: "string" }
+          - { label: "CTA İkincil Buton Yazısı", name: "ctaSecondaryLabel", widget: "string" }
+          - { label: "CTA İkincil Buton Linki", name: "ctaSecondaryHref", widget: "string" }
+          - { label: "CTA Görseli", name: "ctaImage", widget: "image" }
+          - { label: "CTA Görsel Alt Metni", name: "ctaImageAlt", widget: "string" }
+
+      - label: "Sayfa Metinleri"
+        name: "page_settings"
+        file: "src/data/page-settings.json"
+        fields:
+          - label: "Makaleler Sayfası"
+            name: "articles"
+            widget: "object"
+            fields:
+              - { label: "Rozet", name: "eyebrow", widget: "string" }
+              - { label: "Başlık", name: "title", widget: "string" }
+              - { label: "Açıklama", name: "description", widget: "text" }
+              - { label: "Sayfa Başlığı Prefix", name: "pageTitlePrefix", widget: "string" }
+          - label: "Ekip Sayfası"
+            name: "team"
+            widget: "object"
+            fields:
+              - { label: "Rozet", name: "eyebrow", widget: "string" }
+              - { label: "Başlık", name: "title", widget: "string" }
+              - { label: "Açıklama", name: "description", widget: "text" }
+          - label: "Galeri Sayfası"
+            name: "gallery"
+            widget: "object"
+            fields:
+              - { label: "Rozet", name: "eyebrow", widget: "string" }
+              - { label: "Başlık", name: "title", widget: "string" }
+              - { label: "Açıklama", name: "description", widget: "text" }
+          - label: "Hakkımızda Sayfası"
+            name: "about"
+            widget: "object"
+            fields:
+              - { label: "Sayfa Rozeti", name: "eyebrow", widget: "string" }
+              - { label: "Misyon Rozeti", name: "missionLabel", widget: "string" }
+              - { label: "Misyon Başlığı", name: "missionTitle", widget: "string" }
+              - { label: "Misyon Açıklaması", name: "missionDescription", widget: "text" }
+              - { label: "Vizyon Rozeti", name: "visionLabel", widget: "string" }
+              - { label: "Vizyon Başlığı", name: "visionTitle", widget: "string" }
+              - { label: "Vizyon Açıklaması", name: "visionDescription", widget: "text" }
+              - { label: "Timeline Rozeti", name: "timelineEyebrow", widget: "string" }
+              - { label: "Timeline Başlığı", name: "timelineTitle", widget: "string" }
+              - label: "Timeline Öğeleri"
+                name: "timeline"
+                widget: "list"
+                fields:
+                  - { label: "Yıl", name: "year", widget: "string" }
+                  - { label: "Başlık", name: "title", widget: "string" }
+                  - { label: "Açıklama", name: "description", widget: "text" }
+          - label: "İletişim Sayfası"
+            name: "contact"
+            widget: "object"
+            fields:
+              - { label: "Sayfa Rozeti", name: "eyebrow", widget: "string" }
+              - { label: "Bilgi Kutusu Rozeti", name: "infoEyebrow", widget: "string" }
+              - { label: "E-posta Başlığı", name: "emailLabel", widget: "string" }
+              - { label: "Telefon Başlığı", name: "phoneLabel", widget: "string" }
+              - { label: "Adres Başlığı", name: "addressLabel", widget: "string" }
+              - { label: "Harita Rozeti", name: "mapEyebrow", widget: "string" }
+              - { label: "Harita Yer Tutucu Metni", name: "mapPlaceholder", widget: "text" }
+          - label: "404 Sayfası"
+            name: "notFound"
+            widget: "object"
+            fields:
+              - { label: "Rozet", name: "eyebrow", widget: "string" }
+              - { label: "Başlık", name: "title", widget: "string" }
+              - { label: "Açıklama", name: "description", widget: "text" }
+              - { label: "Birincil Buton Yazısı", name: "primaryLabel", widget: "string" }
+              - { label: "Birincil Buton Linki", name: "primaryHref", widget: "string" }
+              - { label: "İkincil Buton Yazısı", name: "secondaryLabel", widget: "string" }
+              - { label: "İkincil Buton Linki", name: "secondaryHref", widget: "string" }
+          - label: "Kategori ve Etiket Sayfaları"
+            name: "taxonomy"
+            widget: "object"
+            fields:
+              - { label: "Kategori Rozeti", name: "categoryEyebrow", widget: "string" }
+              - { label: "Kategori Açıklaması", name: "categoryDescription", widget: "text" }
+              - { label: "Etiket Rozeti", name: "tagEyebrow", widget: "string" }
+              - { label: "Etiket Açıklaması", name: "tagDescription", widget: "text" }

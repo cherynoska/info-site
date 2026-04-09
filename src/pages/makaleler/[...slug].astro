@@ -1,0 +1,33 @@
+---
+import { getCollection, render } from "astro:content";
+import ArticleLayout from "../../layouts/ArticleLayout.astro";
+import { entrySlug, getAdjacentArticles, getRelatedArticles, sortArticles } from "../../utils/helpers";
+
+export async function getStaticPaths() {
+  const articles = await getCollection("articles");
+  return articles.map((article) => ({
+    params: { slug: entrySlug(article.id) },
+    props: { article }
+  }));
+}
+
+const { article } = Astro.props;
+const allArticles = sortArticles(await getCollection("articles"));
+const team = await getCollection("team");
+const authorMember = team.find((member) => member.data.name === article.data.author);
+const currentSlug = entrySlug(article.id);
+const relatedArticles = getRelatedArticles(allArticles, currentSlug, article.data.category, 3);
+const { newer, older } = getAdjacentArticles(allArticles, currentSlug);
+const { Content, headings } = await render(article);
+---
+
+<ArticleLayout
+  article={article}
+  headings={headings}
+  relatedArticles={relatedArticles}
+  authorMember={authorMember}
+  newerArticle={newer}
+  olderArticle={older}
+>
+  <Content />
+</ArticleLayout>

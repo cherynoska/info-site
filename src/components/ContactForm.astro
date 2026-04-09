@@ -1,0 +1,29 @@
+---
+interface Props {
+  action?: string;
+}
+
+const { action = "https://formspree.io/f/placeholder" } = Astro.props;
+---
+
+<form action={action} method="POST" class="surface-card space-y-5 p-6">
+  <div class="grid gap-5 sm:grid-cols-2">
+    <label class="space-y-2 text-sm font-medium text-slate-700 dark:text-slate-200">
+      <span>İsim</span>
+      <input name="name" type="text" required class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-slate-900 placeholder:text-slate-400 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100" placeholder="Adınız soyadınız" />
+    </label>
+    <label class="space-y-2 text-sm font-medium text-slate-700 dark:text-slate-200">
+      <span>E-posta</span>
+      <input name="email" type="email" required class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-slate-900 placeholder:text-slate-400 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100" placeholder="ornek@firma.com" />
+    </label>
+  </div>
+  <label class="space-y-2 text-sm font-medium text-slate-700 dark:text-slate-200">
+    <span>Konu</span>
+    <input name="subject" type="text" required class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-slate-900 placeholder:text-slate-400 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100" placeholder="Mesajınızın konusu" />
+  </label>
+  <label class="space-y-2 text-sm font-medium text-slate-700 dark:text-slate-200">
+    <span>Mesaj</span>
+    <textarea name="message" rows="6" required class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-slate-900 placeholder:text-slate-400 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100" placeholder="Detayları buraya yazın"></textarea>
+  </label>
+  <button type="submit" class="button-primary">Mesajı Gönder</button>
+</form>

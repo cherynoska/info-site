@@ -1,0 +1,95 @@
+---
+interface Props {
+  title?: string;
+}
+
+const { title = "Sitede arayın" } = Astro.props;
+---
+
+<section class="surface-card p-5" data-search-root data-base={import.meta.env.BASE_URL}>
+  <div class="flex items-center justify-between gap-3">
+    <h3 class="font-display text-lg font-semibold text-slate-900 dark:text-white">{title}</h3>
+    <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-500 dark:bg-slate-800 dark:text-slate-400">Pagefind</span>
+  </div>
+  <label class="mt-4 block">
+    <span class="sr-only">{title}</span>
+    <input
+      type="search"
+      data-search-input
+      class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 placeholder:text-slate-400 focus:border-accent-500 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
+      placeholder="Makale, konu veya etiket ara"
+      autocomplete="off"
+    />
+  </label>
+  <p class="pagefind-ui__message" data-search-message data-pagefind-ignore>En iyi sonuçlar build sonrası oluşan arama indeksinden gelir.</p>
+  <div class="pagefind-results-list" data-search-results data-pagefind-ignore></div>
+</section>
+
+<script is:inline>
+  const debounce = (fn, wait = 180) => {
+    let timeout;
+    return (...args) => {
+      clearTimeout(timeout);
+      timeout = window.setTimeout(() => fn(...args), wait);
+    };
+  };
+
+  for (const root of document.querySelectorAll("[data-search-root]")) {
+    if (root.dataset.ready === "true") continue;
+    root.dataset.ready = "true";
+
+    const input = root.querySelector("[data-search-input]");
+    const results = root.querySelector("[data-search-results]");
+    const message = root.querySelector("[data-search-message]");
+    let pagefindModule;
+
+    const ensureModule = async () => {
+      if (pagefindModule) return pagefindModule;
+      try {
+        pagefindModule = await import(`${root.dataset.base}pagefind/pagefind.js`);
+        return pagefindModule;
+      } catch {
+        message.textContent = "Arama indeksi geliştirme modunda hazır olmayabilir. Sonuçlar build sonrası görünür.";
+        return null;
+      }
+    };
+
+    const renderResults = async (query) => {
+      const term = query.trim();
+      results.innerHTML = "";
+
+      if (term.length < 2) {
+        message.textContent = "En az iki karakter girin.";
+        return;
+      }
+
+      const mod = await ensureModule();
+      if (!mod) return;
+
+      const search = await mod.search(term);
+      const items = search?.results?.slice(0, 6) ?? [];
+
+      if (!items.length) {
+        message.textContent = `"${term}" için sonuç bulunamadı.`;
+        return;
+      }
+
+      message.textContent = `${items.length} sonuç gösteriliyor.`;
+
+      for (const item of items) {
+        const data = await item.data();
+        const card = document.createElement("article");
+        card.className = "pagefind-result-item";
+        card.innerHTML = `
+          <a class="block space-y-2" href="${data.url}">
+            <h4 class="font-display text-base font-semibold text-slate-900 dark:text-white">${data.meta.title ?? "Sonuç"}</h4>
+            <p class="text-sm leading-6 text-slate-600 dark:text-slate-300">${data.excerpt ?? ""}</p>
+          </a>
+        `;
+        results.appendChild(card);
+      }
+    };
+
+    input?.addEventListener("input", debounce((event) => renderResults(event.currentTarget.value)));
+  }
+</script>

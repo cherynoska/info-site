@@ -1,0 +1,40 @@
+---
+import { getCollection } from "astro:content";
+import ArticleArchivePage from "../../components/ArticleArchivePage.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import pageSettings from "../../data/page-settings.json";
+import { groupByCount, sortArticles } from "../../utils/helpers";
+
+const allArticles = sortArticles(await getCollection("articles"));
+const currentPage = 1;
+const pageSize = 9;
+const totalPages = Math.max(1, Math.ceil(allArticles.length / pageSize));
+const pageArticles = allArticles.slice(0, pageSize);
+const categories = groupByCount(allArticles.map((article) => article.data.category));
+const tags = groupByCount(allArticles.flatMap((article) => article.data.tags)).slice(0, 14);
+const recentArticles = allArticles.slice(0, 5);
+---
+
+<BaseLayout
+  title={pageSettings.articles.title}
+  description={pageSettings.articles.description}
+  canonicalPath="/makaleler/"
+  structuredData={{
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "Makaleler",
+    description: "Atlas Bilgi makale arşivi"
+  }}
+>
+  <ArticleArchivePage
+    articles={pageArticles}
+    currentPage={currentPage}
+    totalPages={totalPages}
+    categories={categories}
+    tags={tags}
+    recentArticles={recentArticles}
+    eyebrow={pageSettings.articles.eyebrow}
+    title={pageSettings.articles.title}
+    description={pageSettings.articles.description}
+  />
+</BaseLayout>

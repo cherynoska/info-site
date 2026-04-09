@@ -1,0 +1,50 @@
+{
+  "eyebrow": "Modern Bilgi Merkezi",
+  "title": "Bilgiyi daha net, daha hızlı ve daha estetik bir deneyimle sunun.",
+  "description": "Atlas Bilgi; teknoloji, bilim ve yaşam üzerine derlenmiş içerikleri profesyonel tasarım, hızlı performans ve güçlü editöryel yapı ile bir araya getirir.",
+  "primaryLabel": "Makaleleri İncele",
+  "primaryHref": "/makaleler/",
+  "secondaryLabel": "Biz Kimiz?",
+  "secondaryHref": "/hakkimizda/",
+  "heroImage": "/images/uploads/site-preview.svg",
+  "heroImageAlt": "Atlas Bilgi ana sayfa önizlemesini temsil eden modern arayüz görseli",
+  "featuredEyebrow": "Öne Çıkanlar",
+  "featuredTitle": "Günün odak makaleleri",
+  "featuredButtonLabel": "Tüm arşive git",
+  "infoEyebrow": "Neden Atlas Bilgi?",
+  "infoTitle": "İçeriğin kalitesi kadar deneyimini de önemseyen bir yayın yapısı",
+  "infoCards": [
+    {
+      "icon": "document",
+      "title": "Derlenmiş İçerik",
+      "description": "Bilim, teknoloji ve günlük yaşam konularını güvenilir kaynaklar ve sade anlatımla bir araya getiriyoruz."
+    },
+    {
+      "icon": "shield",
+      "title": "Editöryel Kalite",
+      "description": "Her yazı okunabilirlik, doğruluk ve görsel netlik açısından gözden geçirilerek yayına hazırlanır."
+    },
+    {
+      "icon": "home",
+      "title": "Hızlı Erişim",
+      "description": "Kategori, etiket ve sayfa içi arama ile ziyaretçiler ihtiyaç duyduğu bilgiye birkaç saniyede ulaşır."
+    },
+    {
+      "icon": "clock",
+      "title": "Statik Güvenilirlik",
+      "description": "GitHub Pages üzerinde çalışan mimari; hızlı açılış, düşük bakım maliyeti ve sağlam içerik teslimi sağlar."
+    }
+  ],
+  "latestEyebrow": "Son Yayınlar",
+  "latestTitle": "En yeni eklenen yazılar",
+  "latestButtonLabel": "Arşivi gez",
+  "ctaEyebrow": "Sonraki adım",
+  "ctaTitle": "Kurumsal içerik, editöryel iş birliği veya özel yayın akışı mı planlıyorsunuz?",
+  "ctaDescription": "Atlas Bilgi yapısı; düzenli güncellenen bilgi siteleri, kurumsal yayın merkezleri ve git tabanlı editöryel akışlar için ölçeklenebilir bir temel sunar.",
+  "ctaPrimaryLabel": "Bize Ulaşın",
+  "ctaPrimaryHref": "/iletisim/",
+  "ctaSecondaryLabel": "Admin Paneli",
+  "ctaSecondaryHref": "/admin/",
+  "ctaImage": "/images/uploads/galeri-veri.svg",
+  "ctaImageAlt": "Veri panosu görünümünde kurumsal yayın görseli"
+}

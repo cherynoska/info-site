@@ -1,0 +1,119 @@
+---
+import { getCollection } from "astro:content";
+import ArticleCard from "../components/ArticleCard.astro";
+import Hero from "../components/Hero.astro";
+import InfoCard from "../components/InfoCard.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import homepage from "../data/homepage.json";
+import settings from "../data/settings.json";
+import { absoluteUrl, sortArticles, withBase } from "../utils/helpers";
+
+const articles = sortArticles(await getCollection("articles"));
+const featuredArticles = [...articles.filter((article) => article.data.featured), ...articles.filter((article) => !article.data.featured)].slice(0, 3);
+const latestArticles = articles.slice(0, 5);
+
+const structuredData = [
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: settings.siteTitle,
+    description: settings.siteDescription,
+    url: Astro.site ? absoluteUrl("/", Astro.site) : withBase("/")
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: settings.siteTitle,
+    url: Astro.site ? absoluteUrl("/", Astro.site) : withBase("/"),
+    logo: Astro.site ? absoluteUrl(settings.logo || "/images/uploads/site-logo.svg", Astro.site) : withBase(settings.logo || "/images/uploads/site-logo.svg")
+  }
+];
+
+const iconMarkup: Record<string, string> = {
+  document:
+    '<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6.75A2.25 2.25 0 0 1 6.25 4.5h11.5A2.25 2.25 0 0 1 20 6.75v10.5A2.25 2.25 0 0 1 17.75 19.5H6.25A2.25 2.25 0 0 1 4 17.25V6.75Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M8 9h8M8 12h8M8 15h5"/></svg>',
+  shield:
+    '<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="m9 12 2 2 4-4"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 3l7 4v5c0 4.97-3.58 9.62-7 10-3.42-.38-7-5.03-7-10V7l7-4Z"/></svg>',
+  home:
+    '<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10.5 12 4l9 6.5"/><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 9.75v8.75A1.5 1.5 0 0 0 6 20h12a1.5 1.5 0 0 0 1.5-1.5V9.75"/><path stroke-linecap="round" stroke-linejoin="round" d="M9 20v-6h6v6"/></svg>',
+  clock:
+    '<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2"/><path stroke-linecap="round" stroke-linejoin="round" d="M21 12A9 9 0 1 1 3 12a9 9 0 0 1 18 0Z"/></svg>'
+};
+---
+
+<BaseLayout structuredData={structuredData} image={settings.defaultSocialImage || "/images/uploads/site-preview.svg"} canonicalPath="/">
+  <section class="container-shell py-10 lg:py-14">
+    <Hero
+      eyebrow={homepage.eyebrow}
+      title={homepage.title}
+      description={homepage.description}
+      primaryLabel={homepage.primaryLabel}
+      primaryHref={homepage.primaryHref}
+      secondaryLabel={homepage.secondaryLabel}
+      secondaryHref={homepage.secondaryHref}
+    >
+      <img src={withBase(homepage.heroImage)} alt={homepage.heroImageAlt} class="w-full rounded-[2rem] shadow-2xl shadow-brand-900/25" loading="eager" />
+    </Hero>
+  </section>
+
+  <section class="container-shell py-8 lg:py-12">
+    <div class="flex items-end justify-between gap-4">
+      <div>
+        <p class="section-eyebrow">{homepage.featuredEyebrow}</p>
+        <h2 class="mt-4 font-display text-3xl font-semibold text-slate-950 dark:text-white sm:text-4xl">{homepage.featuredTitle}</h2>
+      </div>
+      <a href={withBase("/makaleler/")} class="button-secondary hidden md:inline-flex">{homepage.featuredButtonLabel}</a>
+    </div>
+    <div class="mt-8 grid gap-6 lg:grid-cols-3">
+      {featuredArticles.map((article) => <ArticleCard article={article} />)}
+    </div>
+  </section>
+
+  <section class="container-shell py-8 lg:py-12">
+    <div class="max-w-2xl">
+      <p class="section-eyebrow">{homepage.infoEyebrow}</p>
+      <h2 class="mt-4 font-display text-3xl font-semibold text-slate-950 dark:text-white sm:text-4xl">{homepage.infoTitle}</h2>
+    </div>
+    <div class="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+      {
+        homepage.infoCards.map((item) => (
+          <InfoCard title={item.title} description={item.description}>
+            <span slot="icon" set:html={iconMarkup[item.icon] ?? iconMarkup.document}></span>
+          </InfoCard>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="container-shell py-8 lg:py-12">
+    <div class="flex items-end justify-between gap-4">
+      <div>
+        <p class="section-eyebrow">{homepage.latestEyebrow}</p>
+        <h2 class="mt-4 font-display text-3xl font-semibold text-slate-950 dark:text-white sm:text-4xl">{homepage.latestTitle}</h2>
+      </div>
+      <a href={withBase("/makaleler/")} class="button-secondary hidden md:inline-flex">{homepage.latestButtonLabel}</a>
+    </div>
+    <div class="mt-8 grid gap-5">
+      {latestArticles.map((article) => <ArticleCard article={article} compact={true} />)}
+    </div>
+  </section>
+
+  <section class="container-shell py-8 lg:py-14">
+    <div class="surface-card overflow-hidden">
+      <div class="grid items-center gap-8 bg-gradient-to-br from-brand-950 via-brand-900 to-brand-800 px-6 py-8 text-white dark:from-slate-900 dark:via-brand-950 dark:to-brand-900 lg:grid-cols-[1.1fr_0.9fr] lg:px-10 lg:py-10">
+        <div class="space-y-5">
+          <p class="section-eyebrow border-white/15 bg-white/10 text-white">{homepage.ctaEyebrow}</p>
+          <h2 class="font-display text-3xl font-semibold sm:text-4xl">{homepage.ctaTitle}</h2>
+          <p class="max-w-2xl text-base leading-8 text-slate-200">{homepage.ctaDescription}</p>
+          <div class="flex flex-wrap gap-3">
+            <a href={withBase(homepage.ctaPrimaryHref)} class="button-primary">{homepage.ctaPrimaryLabel}</a>
+            <a href={withBase(homepage.ctaSecondaryHref)} class="button-secondary border-white/20 bg-white/10 text-white hover:bg-white/15">{homepage.ctaSecondaryLabel}</a>
+          </div>
+        </div>
+        <div>
+          <img src={withBase(homepage.ctaImage)} alt={homepage.ctaImageAlt} class="w-full rounded-[1.75rem] shadow-2xl shadow-slate-950/40" loading="lazy" />
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

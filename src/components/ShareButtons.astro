@@ -1,0 +1,65 @@
+---
+interface Props {
+  title: string;
+  url: string;
+}
+
+const { title, url } = Astro.props;
+const encodedTitle = encodeURIComponent(title);
+const encodedUrl = encodeURIComponent(url);
+---
+
+<section class="surface-card p-5" data-pagefind-ignore>
+  <h3 class="font-display text-lg font-semibold text-slate-900 dark:text-white">Paylaş</h3>
+  <div class="mt-4 grid gap-3 sm:grid-cols-2">
+    <a
+      href={`https://x.com/intent/post?text=${encodedTitle}&url=${encodedUrl}`}
+      target="_blank"
+      rel="noreferrer"
+      class="rounded-2xl border border-slate-200 px-4 py-3 text-sm font-medium text-slate-700 hover:border-accent-500/40 hover:text-brand-900 dark:border-slate-700 dark:text-slate-200 dark:hover:text-accent-300"
+    >
+      X'te paylaş
+    </a>
+    <a
+      href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`}
+      target="_blank"
+      rel="noreferrer"
+      class="rounded-2xl border border-slate-200 px-4 py-3 text-sm font-medium text-slate-700 hover:border-accent-500/40 hover:text-brand-900 dark:border-slate-700 dark:text-slate-200 dark:hover:text-accent-300"
+    >
+      LinkedIn
+    </a>
+    <a
+      href={`mailto:?subject=${encodedTitle}&body=${encodedUrl}`}
+      class="rounded-2xl border border-slate-200 px-4 py-3 text-sm font-medium text-slate-700 hover:border-accent-500/40 hover:text-brand-900 dark:border-slate-700 dark:text-slate-200 dark:hover:text-accent-300"
+    >
+      E-posta
+    </a>
+    <button
+      type="button"
+      class="rounded-2xl border border-slate-200 px-4 py-3 text-left text-sm font-medium text-slate-700 hover:border-accent-500/40 hover:text-brand-900 dark:border-slate-700 dark:text-slate-200 dark:hover:text-accent-300"
+      data-copy-link={url}
+    >
+      Bağlantıyı kopyala
+    </button>
+  </div>
+</section>
+
+<script is:inline>
+  for (const button of document.querySelectorAll("[data-copy-link]")) {
+    if (button.dataset.ready === "true") continue;
+    button.dataset.ready = "true";
+
+    button.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(button.dataset.copyLink || "");
+        const original = button.textContent;
+        button.textContent = "Bağlantı kopyalandı";
+        setTimeout(() => {
+          button.textContent = original;
+        }, 1800);
+      } catch {
+        button.textContent = "Kopyalama başarısız";
+      }
+    });
+  }
+</script>

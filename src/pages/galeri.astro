@@ -1,0 +1,33 @@
+---
+import { getCollection } from "astro:content";
+import Gallery from "../components/Gallery.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import pageSettings from "../data/page-settings.json";
+import { sortByOrder } from "../utils/helpers";
+
+const galleryItems = sortByOrder(await getCollection("gallery"));
+---
+
+<BaseLayout
+  title={pageSettings.gallery.title}
+  description={pageSettings.gallery.description}
+  canonicalPath="/galeri/"
+  structuredData={{
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "Galeri",
+    description: "Atlas Bilgi görsel koleksiyonu"
+  }}
+>
+  <section class="container-shell py-12 lg:py-16">
+    <div class="max-w-3xl">
+      <p class="section-eyebrow">{pageSettings.gallery.eyebrow}</p>
+      <h1 class="mt-5 font-display text-4xl font-semibold text-slate-950 dark:text-white sm:text-5xl">{pageSettings.gallery.title}</h1>
+      <p class="mt-5 text-lg leading-8 text-slate-600 dark:text-slate-300">{pageSettings.gallery.description}</p>
+    </div>
+
+    <div class="mt-10">
+      <Gallery items={galleryItems} />
+    </div>
+  </section>
+</BaseLayout>

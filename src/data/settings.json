@@ -1,0 +1,30 @@
+{
+  "siteTitle": "Atlas Bilgi",
+  "siteDescription": "Bilim, teknoloji ve yaşam üzerine güvenilir içerikler sunan modern bir bilgi platformu.",
+  "logo": "/images/uploads/site-logo.svg",
+  "defaultSocialImage": "/images/uploads/site-preview.svg",
+  "contactEmail": "iletisim@atlasbilgi.com",
+  "phone": "+90 (212) 482 10 20",
+  "address": "Büyükdere Caddesi No:145, Levent / İstanbul",
+  "formAction": "https://formspree.io/f/placeholder",
+  "navigation": [
+    { "label": "Ana Sayfa", "href": "/" },
+    { "label": "Makaleler", "href": "/makaleler/" },
+    { "label": "Hakkımızda", "href": "/hakkimizda/" },
+    { "label": "Ekip", "href": "/ekip/" },
+    { "label": "Galeri", "href": "/galeri/" },
+    { "label": "İletişim", "href": "/iletisim/" }
+  ],
+  "footerLinks": [
+    { "label": "RSS", "href": "/rss.xml" },
+    { "label": "Admin", "href": "/admin/" },
+    { "label": "404", "href": "/404/" }
+  ],
+  "socialLinks": [
+    { "label": "LinkedIn", "href": "https://www.linkedin.com/company/ornek-kurum/" },
+    { "label": "GitHub", "href": "https://github.com/cherynoska/info-site" },
+    { "label": "X", "href": "https://x.com/ornekhesap" }
+  ],
+  "footerEyebrow": "Atlas Bilgi",
+  "footerLegalText": "Git tabanlı içerik yönetimi, hızlı statik dağıtım ve erişilebilir tasarım odağıyla oluşturuldu."
+}

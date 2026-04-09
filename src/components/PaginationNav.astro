@@ -1,0 +1,63 @@
+---
+import { withBase } from "../utils/helpers";
+
+interface Props {
+  currentPage: number;
+  totalPages: number;
+  basePath: string;
+}
+
+const { currentPage, totalPages, basePath } = Astro.props;
+
+const pageHref = (page: number) => (page === 1 ? withBase(`${basePath}/`) : withBase(`${basePath}/${page}/`));
+---
+
+{
+  totalPages > 1 && (
+    <nav class="mt-10 flex flex-wrap items-center justify-center gap-2" aria-label="Sayfalandırma" data-pagefind-ignore>
+      <a
+        href={pageHref(Math.max(1, currentPage - 1))}
+        class:list={[
+          "rounded-full border px-4 py-2 text-sm font-medium",
+          currentPage === 1
+            ? "pointer-events-none border-slate-200 text-slate-300 dark:border-slate-800 dark:text-slate-600"
+            : "border-slate-200 text-slate-700 hover:border-accent-500/40 hover:text-brand-900 dark:border-slate-700 dark:text-slate-100 dark:hover:text-accent-300"
+        ]}
+      >
+        Önceki
+      </a>
+
+      {
+        Array.from({ length: totalPages }, (_, index) => {
+          const page = index + 1;
+          return (
+            <a
+              href={pageHref(page)}
+              class:list={[
+                "inline-flex h-11 w-11 items-center justify-center rounded-full text-sm font-semibold",
+                currentPage === page
+                  ? "bg-brand-900 text-white shadow-lg shadow-brand-900/20 dark:bg-accent-500 dark:text-brand-950"
+                  : "border border-slate-200 text-slate-600 hover:border-accent-500/40 hover:text-brand-900 dark:border-slate-700 dark:text-slate-200 dark:hover:text-accent-300"
+              ]}
+              aria-current={currentPage === page ? "page" : undefined}
+            >
+              {page}
+            </a>
+          );
+        })
+      }
+
+      <a
+        href={pageHref(Math.min(totalPages, currentPage + 1))}
+        class:list={[
+          "rounded-full border px-4 py-2 text-sm font-medium",
+          currentPage === totalPages
+            ? "pointer-events-none border-slate-200 text-slate-300 dark:border-slate-800 dark:text-slate-600"
+            : "border-slate-200 text-slate-700 hover:border-accent-500/40 hover:text-brand-900 dark:border-slate-700 dark:text-slate-100 dark:hover:text-accent-300"
+        ]}
+      >
+        Sonraki
+      </a>
+    </nav>
+  )
+}

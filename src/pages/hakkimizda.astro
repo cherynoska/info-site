@@ -1,0 +1,64 @@
+---
+import { getCollection, render } from "astro:content";
+import PageLayout from "../layouts/PageLayout.astro";
+import pageSettings from "../data/page-settings.json";
+import { entrySlug } from "../utils/helpers";
+
+const page = (await getCollection("pages")).find((entry) => entrySlug(entry.id) === "hakkimizda");
+
+if (!page) {
+  throw new Error("Hakkımızda içeriği bulunamadı.");
+}
+
+const { Content } = await render(page);
+---
+
+<PageLayout
+  title={page.data.title}
+  description={page.data.description}
+  eyebrow={pageSettings.about.eyebrow}
+  canonicalPath="/hakkimizda/"
+  structuredData={{
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    name: page.data.title,
+    description: page.data.description
+  }}
+>
+  <Content />
+
+  <Fragment slot="afterContent">
+    <section class="container-shell mt-12 grid gap-6 lg:grid-cols-2">
+      <article class="surface-card p-6">
+        <p class="section-eyebrow">{pageSettings.about.missionLabel}</p>
+        <h2 class="mt-4 font-display text-2xl font-semibold text-slate-950 dark:text-white">{pageSettings.about.missionTitle}</h2>
+        <p class="mt-4 text-sm leading-7 text-slate-600 dark:text-slate-300">{pageSettings.about.missionDescription}</p>
+      </article>
+      <article class="surface-card p-6">
+        <p class="section-eyebrow">{pageSettings.about.visionLabel}</p>
+        <h2 class="mt-4 font-display text-2xl font-semibold text-slate-950 dark:text-white">{pageSettings.about.visionTitle}</h2>
+        <p class="mt-4 text-sm leading-7 text-slate-600 dark:text-slate-300">{pageSettings.about.visionDescription}</p>
+      </article>
+    </section>
+
+    <section class="container-shell mt-12">
+      <div class="surface-card p-6 sm:p-8">
+        <p class="section-eyebrow">{pageSettings.about.timelineEyebrow}</p>
+        <h2 class="mt-4 font-display text-3xl font-semibold text-slate-950 dark:text-white">{pageSettings.about.timelineTitle}</h2>
+        <div class="mt-8 space-y-6">
+          {
+            pageSettings.about.timeline.map((item) => (
+              <div class="grid gap-4 border-b border-slate-200/80 pb-6 last:border-b-0 last:pb-0 sm:grid-cols-[120px_1fr] dark:border-slate-800">
+                <div class="font-display text-xl font-semibold text-accent-500">{item.year}</div>
+                <div>
+                  <h3 class="font-display text-xl font-semibold text-slate-900 dark:text-white">{item.title}</h3>
+                  <p class="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">{item.description}</p>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+  </Fragment>
+</PageLayout>

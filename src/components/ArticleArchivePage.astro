@@ -1,0 +1,45 @@
+---
+import type { CollectionEntry } from "astro:content";
+import ArticleCard from "./ArticleCard.astro";
+import PaginationNav from "./PaginationNav.astro";
+import Sidebar from "./Sidebar.astro";
+
+interface CountItem {
+  value: string;
+  slug: string;
+  count: number;
+}
+
+interface Props {
+  articles: CollectionEntry<"articles">[];
+  currentPage: number;
+  totalPages: number;
+  categories: CountItem[];
+  tags: CountItem[];
+  recentArticles: CollectionEntry<"articles">[];
+  eyebrow: string;
+  title: string;
+  description: string;
+}
+
+const { articles, currentPage, totalPages, categories, tags, recentArticles, eyebrow, title, description } = Astro.props;
+---
+
+<section class="container-shell py-12 lg:py-16">
+  <div class="max-w-3xl">
+    <p class="section-eyebrow">{eyebrow}</p>
+    <h1 class="mt-5 font-display text-4xl font-semibold text-slate-950 dark:text-white sm:text-5xl">{title}</h1>
+    <p class="mt-5 text-lg leading-8 text-slate-600 dark:text-slate-300">{description}</p>
+  </div>
+
+  <div class="mt-10 grid gap-10 xl:grid-cols-[minmax(0,1fr)_320px]">
+    <div>
+      <div class="grid gap-6 md:grid-cols-2">
+        {articles.map((article) => <ArticleCard article={article} />)}
+      </div>
+      <PaginationNav currentPage={currentPage} totalPages={totalPages} basePath="/makaleler" />
+    </div>
+
+    <Sidebar categories={categories} tags={tags} recentArticles={recentArticles} />
+  </div>
+</section>

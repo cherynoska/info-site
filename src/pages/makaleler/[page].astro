@@ -1,0 +1,50 @@
+---
+import { getCollection } from "astro:content";
+import ArticleArchivePage from "../../components/ArticleArchivePage.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import pageSettings from "../../data/page-settings.json";
+import { groupByCount, sortArticles } from "../../utils/helpers";
+
+export async function getStaticPaths() {
+  const articles = sortArticles(await getCollection("articles"));
+  const totalPages = Math.ceil(articles.length / 9);
+
+  return Array.from({ length: Math.max(totalPages - 1, 0) }, (_, index) => ({
+    params: { page: String(index + 2) },
+    props: { pageNumber: index + 2 }
+  }));
+}
+
+const { pageNumber } = Astro.props;
+const allArticles = sortArticles(await getCollection("articles"));
+const pageSize = 9;
+const totalPages = Math.max(1, Math.ceil(allArticles.length / pageSize));
+const pageArticles = allArticles.slice((pageNumber - 1) * pageSize, pageNumber * pageSize);
+const categories = groupByCount(allArticles.map((article) => article.data.category));
+const tags = groupByCount(allArticles.flatMap((article) => article.data.tags)).slice(0, 14);
+const recentArticles = allArticles.slice(0, 5);
+---
+
+<BaseLayout
+  title={`${pageSettings.articles.pageTitlePrefix} ${pageNumber}`}
+  description={pageSettings.articles.description}
+  canonicalPath={`/makaleler/${pageNumber}/`}
+  structuredData={{
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: `${pageSettings.articles.pageTitlePrefix} ${pageNumber}`,
+    description: pageSettings.articles.description
+  }}
+>
+  <ArticleArchivePage
+    articles={pageArticles}
+    currentPage={pageNumber}
+    totalPages={totalPages}
+    categories={categories}
+    tags={tags}
+    recentArticles={recentArticles}
+    eyebrow={pageSettings.articles.eyebrow}
+    title={`${pageSettings.articles.title} ${pageNumber}`}
+    description={pageSettings.articles.description}
+  />
+</BaseLayout>

@@ -1,0 +1,90 @@
+---
+import { Image } from "astro:assets";
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  items: CollectionEntry<"gallery">[];
+}
+
+const { items } = Astro.props;
+---
+
+<section class="space-y-6" data-gallery-root data-pagefind-ignore>
+  <div class="columns-1 gap-5 sm:columns-2 lg:columns-3">
+    {
+      items.map((item, index) => (
+        <button
+          type="button"
+          class="group mb-5 block w-full break-inside-avoid overflow-hidden rounded-[1.75rem] border border-white/60 bg-white/80 text-left shadow-sm shadow-slate-200/60 dark:border-slate-800 dark:bg-slate-900/85"
+          data-gallery-trigger
+          data-gallery-image={item.data.image}
+          data-gallery-alt={item.data.alt}
+          data-gallery-title={item.data.title}
+          data-gallery-description={item.data.description ?? ""}
+        >
+          <Image
+            src={item.data.image}
+            alt={item.data.alt}
+            width={900}
+            height={700}
+            class={`w-full object-cover transition duration-500 group-hover:scale-[1.03] ${index % 3 === 1 ? "aspect-[4/5]" : "aspect-[4/3]"}`}
+          />
+          <div class="space-y-2 p-5">
+            <h3 class="font-display text-xl font-semibold text-slate-900 dark:text-white">{item.data.title}</h3>
+            {item.data.description && <p class="text-sm leading-6 text-slate-600 dark:text-slate-300">{item.data.description}</p>}
+          </div>
+        </button>
+      ))
+    }
+  </div>
+
+  <div class="lightbox-backdrop" data-lightbox data-open="false" aria-hidden="true">
+    <div class="lightbox-panel">
+      <button type="button" class="lightbox-close" data-lightbox-close>Kapat</button>
+      <img src="" alt="" class="max-h-[78vh] w-full object-contain bg-slate-950" data-lightbox-image />
+      <div class="space-y-2 bg-slate-900 p-6">
+        <h3 class="font-display text-2xl font-semibold text-white" data-lightbox-title></h3>
+        <p class="text-sm leading-7 text-slate-300" data-lightbox-description></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  for (const root of document.querySelectorAll("[data-gallery-root]")) {
+    if (root.dataset.ready === "true") continue;
+    root.dataset.ready = "true";
+
+    const backdrop = root.querySelector("[data-lightbox]");
+    const image = root.querySelector("[data-lightbox-image]");
+    const title = root.querySelector("[data-lightbox-title]");
+    const description = root.querySelector("[data-lightbox-description]");
+
+    const close = () => {
+      backdrop?.setAttribute("data-open", "false");
+      backdrop?.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+    };
+
+    root.querySelectorAll("[data-gallery-trigger]").forEach((trigger) => {
+      trigger.addEventListener("click", () => {
+        image?.setAttribute("src", trigger.dataset.galleryImage ?? "");
+        image?.setAttribute("alt", trigger.dataset.galleryAlt ?? "");
+        if (title) title.textContent = trigger.dataset.galleryTitle ?? "";
+        if (description) description.textContent = trigger.dataset.galleryDescription ?? "";
+        backdrop?.setAttribute("data-open", "true");
+        backdrop?.setAttribute("aria-hidden", "false");
+        document.body.style.overflow = "hidden";
+      });
+    });
+
+    backdrop?.addEventListener("click", (event) => {
+      if (event.target === backdrop) close();
+    });
+
+    root.querySelector("[data-lightbox-close]")?.addEventListener("click", close);
+    window.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") close();
+    });
+  }
+</script>

@@ -1,0 +1,33 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import TeamMember from "../components/TeamMember.astro";
+import pageSettings from "../data/page-settings.json";
+import { sortByOrder, stripMarkdown, truncate } from "../utils/helpers";
+
+const team = sortByOrder(await getCollection("team"));
+---
+
+<BaseLayout
+  title={pageSettings.team.title}
+  description={pageSettings.team.description}
+  canonicalPath="/ekip/"
+  structuredData={{
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "Ekip",
+    description: "Atlas Bilgi ekip üyeleri"
+  }}
+>
+  <section class="container-shell py-12 lg:py-16">
+    <div class="max-w-3xl">
+      <p class="section-eyebrow">{pageSettings.team.eyebrow}</p>
+      <h1 class="mt-5 font-display text-4xl font-semibold text-slate-950 dark:text-white sm:text-5xl">{pageSettings.team.title}</h1>
+      <p class="mt-5 text-lg leading-8 text-slate-600 dark:text-slate-300">{pageSettings.team.description}</p>
+    </div>
+
+    <div class="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+      {team.map((member) => <TeamMember member={member} bio={truncate(stripMarkdown(member.body ?? ""), 160)} />)}
+    </div>
+  </section>
+</BaseLayout>

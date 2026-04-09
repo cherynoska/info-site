@@ -1,0 +1,100 @@
+---
+import settings from "../data/settings.json";
+import { withBase } from "../utils/helpers";
+import ThemeToggle from "./ThemeToggle.astro";
+
+const pathname = Astro.url.pathname.endsWith("/") ? Astro.url.pathname : `${Astro.url.pathname}/`;
+const navigationItems = settings.navigation ?? [];
+
+const isActive = (href: string) => {
+  const resolved = withBase(href);
+  if (resolved === withBase("/")) return pathname === resolved;
+  return pathname.startsWith(resolved);
+};
+---
+
+<header class="sticky top-0 z-40 border-b border-white/60 bg-white/70 backdrop-blur-xl dark:border-slate-800 dark:bg-slate-950/72">
+  <div class="container-shell">
+    <div class="flex items-center justify-between py-4">
+      <a href={withBase("/")} class="flex items-center gap-3 text-slate-900 dark:text-white">
+        {
+          settings.logo ? (
+            <img src={withBase(settings.logo)} alt={settings.siteTitle} class="h-11 w-auto rounded-2xl shadow-sm" loading="eager" />
+          ) : (
+            <span class="rounded-2xl bg-brand-900 px-3 py-2 font-display text-sm font-bold text-white dark:bg-accent-500 dark:text-brand-950">
+              AB
+            </span>
+          )
+        }
+        <span class="hidden font-display text-base font-semibold md:inline">{settings.siteTitle}</span>
+      </a>
+
+      <nav class="hidden items-center gap-2 md:flex" aria-label="Ana menü">
+        {
+          navigationItems.map((item) => (
+            <a
+              href={withBase(item.href)}
+              class:list={[
+                "rounded-full px-4 py-2 text-sm font-medium",
+                isActive(item.href)
+                  ? "bg-brand-900 text-white shadow-lg shadow-brand-900/15 dark:bg-accent-500 dark:text-brand-950"
+                  : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800/80 dark:hover:text-white"
+              ]}
+            >
+              {item.label}
+            </a>
+          ))
+        }
+      </nav>
+
+      <div class="flex items-center gap-3">
+        <ThemeToggle />
+        <button
+          type="button"
+          class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-slate-200 bg-white/80 text-slate-700 md:hidden dark:border-slate-700 dark:bg-slate-900/80 dark:text-slate-100"
+          aria-expanded="false"
+          aria-controls="mobile-nav"
+          data-mobile-menu-button
+        >
+          <span class="sr-only">Mobil menüyü aç</span>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 7h16M4 12h16M4 17h16" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <nav id="mobile-nav" class="hidden border-t border-slate-200/80 py-4 md:hidden dark:border-slate-800" aria-label="Mobil menü">
+      <div class="flex flex-col gap-2">
+        {
+          navigationItems.map((item) => (
+            <a
+              href={withBase(item.href)}
+              class:list={[
+                "rounded-2xl px-4 py-3 text-sm font-medium",
+                isActive(item.href)
+                  ? "bg-brand-900 text-white dark:bg-accent-500 dark:text-brand-950"
+                  : "text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800"
+              ]}
+            >
+              {item.label}
+            </a>
+          ))
+        }
+      </div>
+    </nav>
+  </div>
+</header>
+
+<script is:inline>
+  for (const button of document.querySelectorAll("[data-mobile-menu-button]")) {
+    if (button.dataset.ready === "true") continue;
+    button.dataset.ready = "true";
+    const menu = document.getElementById(button.getAttribute("aria-controls"));
+    button.addEventListener("click", () => {
+      const expanded = button.getAttribute("aria-expanded") === "true";
+      button.setAttribute("aria-expanded", String(!expanded));
+      menu?.classList.toggle("hidden", expanded);
+    });
+  }
+</script>

@@ -1,0 +1,70 @@
+{
+  "articles": {
+    "eyebrow": "Yayın Arşivi",
+    "title": "Makaleler",
+    "description": "Bilim, teknoloji ve yaşam başlıklarında yayımlanan içerikleri kategori, etiket ve sayfalandırma desteğiyle keşfedin.",
+    "pageTitlePrefix": "Makaleler Sayfa"
+  },
+  "team": {
+    "eyebrow": "Editöryel Kadro",
+    "title": "İçerik kalitesini yöneten ekip",
+    "description": "İçerik planlamasından yayın akışına kadar her aşamada sade anlatım, görsel netlik ve doğruluk odaklı çalışan bir çekirdek ekip."
+  },
+  "gallery": {
+    "eyebrow": "Görsel Arşiv",
+    "title": "Üretim atmosferini yakından görün",
+    "description": "Galeri bölümü; editöryel masa, araştırma panoları ve ekip çalışma ortamı gibi görsel sahneleri tek bir sayfada toplar."
+  },
+  "about": {
+    "eyebrow": "Kurumsal Perspektif",
+    "missionLabel": "Misyon",
+    "missionTitle": "Doğru bilgiyi sade bir deneyimle erişilebilir kılmak",
+    "missionDescription": "Atlas Bilgi, yoğun bilgi akışını daha anlaşılır ve kullanılabilir hale getirerek okuyucunun güvenilir referans içeriklere hızlı erişmesini amaçlar.",
+    "visionLabel": "Vizyon",
+    "visionTitle": "Kurumsal ölçekte sürdürülebilir içerik sistemleri kurmak",
+    "visionDescription": "Performans, editöryel kalite ve bakım kolaylığını bir araya getirerek uzun ömürlü bilgi platformları için güvenilir bir temel oluşturmak istiyoruz.",
+    "timelineEyebrow": "Yolculuk",
+    "timelineTitle": "Kısa zaman çizelgesi",
+    "timeline": [
+      {
+        "year": "2023",
+        "title": "Editöryel çerçeve oluştu",
+        "description": "Bilgiyi sade, güvenilir ve estetik bir dijital deneyimle sunma hedefi netleştirildi."
+      },
+      {
+        "year": "2024",
+        "title": "İçerik modeli tasarlandı",
+        "description": "Makaleler, ekip girdileri ve kurumsal sayfalar için sürdürülebilir bir yayın akışı kuruldu."
+      },
+      {
+        "year": "2025",
+        "title": "Statik yayın altyapısı seçildi",
+        "description": "Astro, GitHub Pages ve Decap CMS birleşimiyle performans ve düzenleme kolaylığı dengelendi."
+      }
+    ]
+  },
+  "contact": {
+    "eyebrow": "Bağlantıda Kalın",
+    "infoEyebrow": "İletişim Bilgileri",
+    "emailLabel": "E-posta",
+    "phoneLabel": "Telefon",
+    "addressLabel": "Adres",
+    "mapEyebrow": "Harita Alanı",
+    "mapPlaceholder": "Google Maps veya özel konum bileşeni için yer tutucu alan"
+  },
+  "notFound": {
+    "eyebrow": "404",
+    "title": "Yol burada bitiyor.",
+    "description": "İçeriği yeniden aramak, ana sayfaya dönmek veya makale arşivini açmak için aşağıdaki bağlantıları kullanabilirsiniz.",
+    "primaryLabel": "Ana sayfa",
+    "primaryHref": "/",
+    "secondaryLabel": "Makaleler",
+    "secondaryHref": "/makaleler/"
+  },
+  "taxonomy": {
+    "categoryEyebrow": "Kategori Arşivi",
+    "categoryDescription": "Bu başlık altında yayımlanan içerikleri tek sayfada inceleyebilir, diğer kategorilere hızlıca geçebilirsiniz.",
+    "tagEyebrow": "Etiket Arşivi",
+    "tagDescription": "Benzer kavramları ve ortak temaları bir araya getiren etiket sayfasında ilgili makaleleri birlikte görebilirsiniz."
+  }
+}
